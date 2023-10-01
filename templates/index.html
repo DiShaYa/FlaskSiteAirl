@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Flask Yandex Maps Example</title>
+    <script src="https://api-maps.yandex.ru/2.1/?apikey={{ api_key }}&lang=ru_RU" type="text/javascript"></script>
+    <script src="https://yandex.st/jquery/2.2.3/jquery.min.js" type="text/javascript"></script>
+    <script src="object_manager.js" type="text/javascript"></script>
+     <script src="clusterer_create.js" type="text/javascript"></script>
+    <style>
+        #map {
+            width: 100%;
+            height: 500px;
+        }
+    </style>
+    <style>
+        .scrollable-table-container {
+            max-height: 300px; /* Установите желаемую максимальную высоту для контейнера с прокруткой */
+            overflow-y: auto; /* Добавляем вертикальную прокрутку для контейнера с прокруткой */
+            }
+        /* Стиль для div с прокруткой */
+        .scrollable-table {
+            width: 100%;
+            border-collapse: collapse;
+            overflow-y: auto; /* Добавляем вертикальную прокрутку для .left элемента */
+            }
+        .scrollable-table th, .scrollable-table td {
+            border: 1px solid #666;
+            padding: 8px;
+            text-align: left;
+            overflow-y: auto; /* Добавляем вертикальную прокрутку для .left элемента */
+            }
+        .container {
+            display: flex;
+            background-color: #333; /* Темно-серый фон */
+            color: #fff; /* Белый текст */
+        }
+        .left {
+            flex: 1;
+            width: 50%; /* Установите желаемую ширину, например, 50% */
+            padding: 20px;
+            overflow-y: auto; /* Добавляем вертикальную прокрутку для .left элемента */
+        }
+
+        .right {
+            flex: 1;
+            width: 100%;}
+        .left button {
+            background-color: #007bff; /* Цвет кнопки (синий) */
+            color: #fff; /* Цвет текста кнопки (белый) */
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            }
+        .left button:hover {
+    background-color: #0056b3; /* Измененный цвет кнопки при наведении */
+}
+        .left input[type="text"] {
+            width: 90%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #555;
+            background-color: #444;
+            color: #fff;
+            }
+        .left ul {
+            list-style-type: none;
+            padding: 0;
+            }
+
+        .left ul li {
+            margin-bottom: 5px;
+            }
+/* Стиль для фона страницы */
+        html, body {
+            background-color: #333; /* Темно-серый фон для страницы */
+            color: #fff; /* Белый текст */
+            margin: 0; /* Удалить отступы по умолчанию */
+            padding: 0; /* Удалить отступы по умолчанию */
+        }
+    </style>
+
+</head>
+<body>
+    <h1> Аэропорты </h1>
+    <div class="container">
+        <div class="right">
+            <div id="map"></div>
+            <script type="text/javascript">
+                ymaps.ready(init);
+
+                function init(){
+                    var myMap = new ymaps.Map("map", {
+                        center: [55.76, 37.64],
+                        zoom: 2
+                        },{
+                        searchControlProvider: 'yandex#search'
+                        }),
+                        objectManager = new ymaps.ObjectManager({
+            // Чтобы метки начали кластеризоваться, выставляем опцию.
+                        clusterize: true,
+            // ObjectManager принимает те же опции, что и кластеризатор.
+                        gridSize: 32,
+                        clusterDisableClickZoom: true
+                        });
+        // Чтобы задать опции одиночным объектам и кластерам,
+            // обратимся к дочерним коллекциям ObjectManager.
+                        objectManager.objects.options.set('preset', 'islands#greenDotIcon');
+                        objectManager.clusters.options.set('preset', 'islands#greenClusterIcons');
+                        myMap.geoObjects.add(objectManager);
+
+                        var data = {
+                        "type": "FeatureCollection",
+                        "features": [
+        {"type": "Feature", "id": 1, "geometry": {"type": "Point", "coordinates": [51.48,-0.46]}, "properties": {"balloonContentHeader": "<font size=3><b><a target='_blank' href='https://yandex.ru'>Heathrow (LHR)</a></b></font>"}},
+{"type": "Feature", "id": 2, "geometry": {"type": "Point", "coordinates": [40.6413, -73.7781]}, "properties": {"balloonContentHeader": "<font size=3><b><a target='_blank' href='https://yandex.ru'>JFK (John F. Kennedy International)(LHR)</a></b></font>"}},
+{"type": "Feature", "id": 3, "geometry": {"type": "Point", "coordinates": [33.9416, -118.4085]}, "properties": {"balloonContentHeader": "<font size=3><b><a target='_blank' href='https://yandex.ru'>Los Angeles International (LAX)</a></b></font>"}},
+{"type": "Feature", "id": 4, "geometry": {"type": "Point", "coordinates": [41.9796, -87.9045]}, "properties": {"balloonContentHeader": "<font size=3><b><a target='_blank' href='https://yandex.ru'>O'Hare International (ORD)</a></b></font>"}},
+{"type": "Feature", "id": 5, "geometry": {"type": "Point", "coordinates": [32.8998, -97.0403]}, "properties": {"balloonContentHeader": "<font size=3><b><a target='_blank' href='https://yandex.ru'>Dallas/Fort Worth International (DFW)</a></b></font>"}},
+{"type": "Feature", "id": 6, "geometry": {"type": "Point", "coordinates": [39.8561, -104.6737]}, "properties": {"balloonContentHeader": "<font size=3><b><a target='_blank' href='https://yandex.ru'>Denver International (DEN)</a></b></font>"}},
+{"type": "Feature", "id": 7, "geometry": {"type": "Point", "coordinates": [35.7647, 140.3864]}, "properties": {"balloonContentHeader": "<font size=3><b><a target='_blank' href='https://yandex.ru'>Narita International (NRT)</a></b></font>"}},
+{"type": "Feature", "id": 8, "geometry": {"type": "Point", "coordinates": [40.0799, 116.6031]}, "properties": {"balloonContentHeader": "<font size=3><b><a target='_blank' href='https://yandex.ru'>Beijing Capital International (PEK)</a></b></font>"}},
+{"type": "Feature", "id": 9, "geometry": {"type": "Point", "coordinates": [52.3081, 4.7642]}, "properties": {"balloonContentHeader": "<font size=3><b><a target='_blank' href='https://yandex.ru'>Amsterdam Airport Schiphol (AMS)</a></b></font>"}},
+{"type": "Feature", "id": 10, "geometry": {"type": "Point", "coordinates": [49.0097, 2.5479]}, "properties": {"balloonContentHeader": "<font size=3><b><a target='_blank' href='https://yandex.ru'>Charles de Gaulle Airport (CDG)</a></b></font>"}},
+{"type": "Feature", "id": 11, "geometry": {"type": "Point", "coordinates": [50.0336, 8.5706]}, "properties": {"balloonContentHeader": "<font size=3><b><a target='_blank' href='https://yandex.ru'>Frankfurt Airport</a></b></font>"}},
+{"type": "Feature", "id": 12, "geometry": {"type": "Point", "coordinates": [40.472222, -3.560833]}, "properties": {"balloonContentHeader": "<font size=3><b><a target='_blank' href='https://yandex.ru'>Madrid-Barajas Airport</a></b></font>"}},
+{"type": "Feature", "id": 13, "geometry": {"type": "Point", "coordinates": [41.8003, 12.2388]}, "properties": {"balloonContentHeader": "<font size=3><b><a target='_blank' href='https://yandex.ru'>Leonardo da Vinci-Fiumicino Airport</a></b></font>"}},
+{"type": "Feature", "id": 14, "geometry": {"type": "Point", "coordinates": [25.2532, 55.3657]}, "properties": {"balloonContentHeader": "<font size=3><b><a target='_blank' href='https://yandex.ru'>Dubai International Airport</a></b></font>"}},
+{"type": "Feature", "id": 15, "geometry": {"type": "Point", "coordinates": [31.1443, 121.8083]}, "properties": {"balloonContentHeader": "<font size=3><b><a target='_blank' href='https://yandex.ru'>Shanghai Pudong International</a></b></font>"}},
+{"type": "Feature", "id": 16, "geometry": {"type": "Point", "coordinates": [-37.6733, 144.8495]}, "properties": {"balloonContentHeader": "<font size=3><b><a target='_blank' href='https://yandex.ru'>Melbourne Airport</a></b></font>"}},
+{"type": "Feature", "id": 17, "geometry": {"type": "Point", "coordinates": [33.6407, -84.4277]}, "properties": {"balloonContentHeader": "<font size=3><b><a target='_blank' href='https://yandex.ru'>Hartsfield-Jackson Atlanta International</a></b></font>"}},
+{"type": "Feature", "id": 18, "geometry": {"type": "Point", "coordinates": [47.4502, -122.3088]}, "properties": {"balloonContentHeader": "<font size=3><b><a target='_blank' href='https://yandex.ru'>Seattle-Tacoma International</a></b></font>"}},
+{"type": "Feature", "id": 19, "geometry": {"type": "Point", "coordinates": [36.086, -115.1523]}, "properties": {"balloonContentHeader": "<font size=3><b><a target='_blank' href='https://yandex.ru'>McCarran International</a></b></font>"}},
+{"type": "Feature", "id": 20, "geometry": {"type": "Point", "coordinates": [42.3651, -71.0182]}, "properties": {"balloonContentHeader": "<font size=3><b><a target='_blank' href='https://yandex.ru'>Logan International</a></b></font>"}},
+{"type": "Feature", "id": 21, "geometry": {"type": "Point", "coordinates": [38.9521, -77.4477]}, "properties": {"balloonContentHeader": "<font size=3><b><a target='_blank' href='https://yandex.ru'>Washington Dulles International</a></b></font>"}},
+{"type": "Feature", "id": 22, "geometry": {"type": "Point", "coordinates": [39.8729, -75.2437]}, "properties": {"balloonContentHeader": "<font size=3><b><a target='_blank' href='https://yandex.ru'>Philadelphia International</a></b></font>"}},
+{"type": "Feature", "id": 23, "geometry": {"type": "Point", "coordinates": [42.2125, -83.3534]}, "properties": {"balloonContentHeader": "<font size=3><b><a target='_blank' href='https://yandex.ru'>Detroit Metropolitan Wayne County</a></b></font>"}},
+{"type": "Feature", "id": 24, "geometry": {"type": "Point", "coordinates": [44.8812, -93.2218]}, "properties": {"balloonContentHeader": "<font size=3><b><a target='_blank' href='https://yandex.ru'>Minneapolis-Saint Paul International</a></b></font>"}},
+{"type": "Feature", "id": 25, "geometry": {"type": "Point", "coordinates": [33.4343, -112.0116]}, "properties": {"balloonContentHeader": "<font size=3><b><a target='_blank' href='https://yandex.ru'>Phoenix Sky Harbor International</a></b></font>"}},
+{"type": "Feature", "id": 26, "geometry": {"type": "Point", "coordinates": [37.6213, -122.379]}, "properties": {"balloonContentHeader": "<font size=3><b><a target='_blank' href='https://yandex.ru'>San Francisco International</a></b></font>"}},
+{"type": "Feature", "id": 27, "geometry": {"type": "Point", "coordinates": [32.7336, -117.1897]}, "properties": {"balloonContentHeader": "<font size=3><b><a target='_blank' href='https://yandex.ru'>San Diego International</a></b></font>"}},
+{"type": "Feature", "id": 28, "geometry": {"type": "Point", "coordinates": [26.0735, -80.1528]}, "properties": {"balloonContentHeader": "<font size=3><b><a target='_blank' href='https://yandex.ru'>Fort Lauderdale-Hollywood International</a></b></font>"}},
+{"type": "Feature", "id": 29, "geometry": {"type": "Point", "coordinates": [28.4294, -81.3089]}, "properties": {"balloonContentHeader": "<font size=3><b><a target='_blank' href='https://yandex.ru'>Orlando International</a></b></font>"}},
+{"type": "Feature", "id": 30, "geometry": {"type": "Point", "coordinates": [29.98787,-90.25709]}, "properties": {"balloonContentHeader": "<font size=3><b><a target='_blank' href='https://yandex.ru'>Louis Armstrong New Orleans International</a></b></font>"}},
+{"type": "Feature", "id": 31, "geometry": {"type": "Point", "coordinates": [-37.00867,174.78293]}, "properties": {"balloonContentHeader": "<font size=3><b><a target='_blank' href='https://yandex.ru'>Auckland Airport</a></b></font>"}},
+{"type": "Feature", "id": 32, "geometry": {"type": "Point", "coordinates": [43.68178,-79.61801]}, "properties": {"balloonContentHeader": "<font size=3><b><a target='_blank' href='https://yandex.ru'>Toronto Pearson International</a></b></font>"}},
+{"type": "Feature", "id": 33, "geometry": {"type": "Point", "coordinates": [29.98620,-95.33723]}, "properties": {"balloonContentHeader": "<font size=3><b><a target='_blank' href='https://yandex.ru'>George Bush Intercontinental</a></b></font>"}},
+{"type": "Feature", "id": 34, "geometry": {"type": "Point", "coordinates": [32.84788,-96.84691]}, "properties": {"balloonContentHeader": "<font size=3><b><a target='_blank' href='https://yandex.ru'>Dallas Love Field</a></b></font>"}},
+{"type": "Feature", "id": 35, "geometry": {"type": "Point", "coordinates": [25.7933, -80.2906]}, "properties": {"balloonContentHeader": "<font size=3><b><a target='_blank' href='https://yandex.ru'>Miami International</a></b></font>"}},
+{"type": "Feature", "id": 36, "geometry": {"type": "Point", "coordinates": [60.3172, 24.9633]}, "properties": {"balloonContentHeader": "<font size=3><b><a target='_blank' href='https://yandex.ru'>Helsinki-Vantaa Airport</a></b></font>"}},
+{"type": "Feature", "id": 37, "geometry": {"type": "Point", "coordinates": [-33.9468, 151.1772]}, "properties": {"balloonContentHeader": "<font size=3><b><a target='_blank' href='https://yandex.ru'>Sydney Airport</a></b></font>"}},
+{"type": "Feature", "id": 38, "geometry": {"type": "Point", "coordinates": [27.9755, -82.5334]}, "properties": {"balloonContentHeader": "<font size=3><b><a target='_blank' href='https://yandex.ru'>Tampa International</a></b></font>"}},
+{"type": "Feature", "id": 39, "geometry": {"type": "Point", "coordinates": [35.0424, -89.9819]}, "properties": {"balloonContentHeader": "<font size=3><b><a target='_blank' href='https://yandex.ru'>Memphis International</a></b></font>"}},
+{"type": "Feature", "id": 40, "geometry": {"type": "Point", "coordinates": [13.6933, 100.75]}, "properties": {"balloonContentHeader": "<font size=3><b><a target='_blank' href='https://yandex.ru'>Suvarnabhumi Airport</a></b></font>"}},
+{"type": "Feature", "id": 41, "geometry": {"type": "Point", "coordinates": [1.3644, 103.9915]}, "properties": {"balloonContentHeader": "<font size=3><b><a target='_blank' href='https://yandex.ru'>Singapore Changi Airport</a></b></font>"}},
+{"type": "Feature", "id": 42, "geometry": {"type": "Point", "coordinates": [22.308, 113.9185]}, "properties": {"balloonContentHeader": "<font size=3><b><a target='_blank' href='https://yandex.ru'>Hong Kong International</a></b></font>"}},
+{"type": "Feature", "id": 43, "geometry": {"type": "Point", "coordinates": [49.1967, -123.1815]}, "properties": {"balloonContentHeader": "<font size=3><b><a target='_blank' href='https://yandex.ru'>Vancouver International</a></b></font>"}},
+{"type": "Feature", "id": 44, "geometry": {"type": "Point", "coordinates": [51.1139, -114.019]}, "properties": {"balloonContentHeader": "<font size=3><b><a target='_blank' href='https://yandex.ru'>Calgary International</a></b></font>"}},
+{"type": "Feature", "id": 45, "geometry": {"type": "Point", "coordinates": [19.4363, -99.0721]}, "properties": {"balloonContentHeader": "<font size=3><b><a target='_blank' href='https://yandex.ru'>Mexico City International</a></b></font>"}}
+    ]
+                        };
+
+                        objectManager.add(data); }
+
+            </script>
+        </div>
+
+        <div class="left">
+            <a href="/login"><button>Логин</button></a>
+            <a href="/register"><button>Регистрация</button></a>
+
+            <h3>Поиск</h3>
+
+            <form method="POST" action="/search">
+                <input type="text" name="keyword" placeholder="Введите ключевое слово" required>
+                <button type="submit">Найти</button>
+            </form>
+
+
+
+            <h4>Список аэропортов</h4>
+            <div class="scrollable-table-container">
+                <div class="scrollable-table">
+                    <table>
+                        <tr>
+                            <th>Аэропорты</th>
+                            <th>рейсы</th>
+                        </tr>
+                        {% for result in results %}
+                            <tr>
+                                <td>{{ result.name }}</td>
+                                <td>{{ result.raic }}</td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+        </div>
+        <div>
+    </div>
+</body>
+</html>

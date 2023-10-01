@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title> Добавление записи </title>
+    <style>
+         html, body {
+            background-color: #333; /* Темно-серый фон для страницы */
+            color: #fff; /* Белый текст */
+            margin: 0; /* Удалить отступы по умолчанию */
+            padding: 0; /* Удалить отступы по умолчанию */
+        }
+         .container {
+            display: flex;
+            background-color: #333; /* Темно-серый фон */
+            color: #fff; }
+         /* Белый текст */
+    </style>
+</head>
+<body>
+    <h1>Добавить запись</h1>
+    <div class="container">
+        <form method="post" class="form-control">
+            <input type="text" name="name" placeholder="Введите название аэропорта" class="form-control"><br>
+            <input class="form-control" type="text" name="raic" placeholder="Введите названия рейса аэропорта"><br>
+            <input type="text" name="coordinate_x" placeholder=" " class="form-control"><br>
+            <input class="form-control" type="text" name="coordinate_y" placeholder=" "><br>
+            <button class="btn success" type="submit"> Добавить </button>
+        </form>
+    <div>
+</body>
+</html>

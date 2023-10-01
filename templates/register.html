@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+         html, body {
+            background-color: #333; /* Темно-серый фон для страницы */
+            color: #fff; /* Белый текст */
+            margin: 0; /* Удалить отступы по умолчанию */
+            padding: 0; /* Удалить отступы по умолчанию */
+        }
+         .container {
+            display: flex;
+            background-color: #333; /* Темно-серый фон */
+            color: #fff; /* Белый текст */
+            padding: 20px;}
+    </style>
+</head>
+<body>
+
+<h1>Register page</h1>
+<div class="container">
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class=flashes>
+    {% for message in messages %}
+      <li>{{ message }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
+
+<form method="POST">
+    <table>
+        <tr>
+            <td>Login</td>
+            <td><input type="text" name="login"></td>
+        </tr>
+        <tr>
+            <td>Password</td>
+            <td><input type="password" name="password"></td>
+        </tr>
+        <tr>
+            <td>Password retype</td>
+            <td><input type="password" name="password2"></td>
+        </tr>
+        <tr>
+            <td><a href="{{ url_for('login_page') }}">Login</a></td>
+            <td><input type="submit" value="Register"></td>
+        </tr>
+    </table>
+</form>
+<div>
+</body>
+</html>
